@@ -1,6 +1,8 @@
-﻿using EventsWebApplication.Core.Interfaces;
+﻿using EventsWebApplication.Core.DTOs;
+using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
 using EventsWebApplication.Infrasturture.Data;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Infrastructure.Repositories
@@ -16,21 +18,24 @@ namespace EventsWebApplication.Infrastructure.Repositories
         public async Task<IEnumerable<Event>> GetAllEventsAsync()
         {
             return await _dbContext.Events
-                .Include(e => e.Participants)
+                .Include(e => e.EventParticipants)
+                .ThenInclude(ep => ep.Participant)
                 .ToListAsync();
         }
 
         public async Task<Event> GetEventByIdAsync(int id)
         {
             return await _dbContext.Events
-                .Include(e => e.Participants)
+                .Include(e => e.EventParticipants)
+                .ThenInclude(ep => ep.Participant)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<Event> GetEventByNameAsync(string title)
+        public async Task<Event> GetEventByTitleAsync(string title)
         {
             return await _dbContext.Events
-                .Include(e => e.Participants)
+                .Include(e => e.EventParticipants)
+                .ThenInclude(ep => ep.Participant)
                 .FirstOrDefaultAsync(e => e.Title == title);
         }
         public async Task AddEventAsync(Event newEvent)
@@ -53,6 +58,47 @@ namespace EventsWebApplication.Infrastructure.Repositories
                 _dbContext.Events.Remove(eventToDelete);
                 await _dbContext.SaveChangesAsync();
             }
+        }
+        public IQueryable<Event> GetEventsWithFilterQuery(EventFilterDto filter)
+        {
+            var query = _dbContext.Events.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filter.Title))
+            {
+                query = query.Where(e => e.Title.StartsWith(filter.Title));
+            }
+            if (filter.FilterDate.HasValue)
+            {
+                query = query.Where(e => e.DateAndTime.Date == filter.FilterDate.Value.Date);
+            }
+            if (!string.IsNullOrWhiteSpace(filter.FilterLocation))
+            {
+                query = query.Where(e => e.Location.StartsWith(filter.FilterLocation));
+            }
+            if (!string.IsNullOrWhiteSpace(filter.FilterCategory))
+            {
+                query = query.Where(e => e.Category.StartsWith(filter.FilterCategory));
+            }
+
+            return query;
+        }
+
+
+        public async Task<int> GetCurrentParticipantsAsync(int eventId)
+        {
+            return await _dbContext.EventParticipants
+                .Where(ep => ep.EventId == eventId)
+                .CountAsync();
+        }
+        public async Task<int> GetAvailableSeatsAsync(int eventId)
+        {
+            var eventEntity = await _dbContext.Events.FindAsync(eventId);
+            if (eventEntity != null)
+            {
+                var currentParticipants = await GetCurrentParticipantsAsync(eventId);
+                return eventEntity.MaxParticipants - currentParticipants;
+            }
+            return 0;
         }
     }
 }

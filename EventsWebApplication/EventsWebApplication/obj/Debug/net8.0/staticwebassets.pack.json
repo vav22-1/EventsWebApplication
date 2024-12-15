@@ -1,0 +1,77 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_09f424d5-d4a6-4225-a0dc-4e2d42b66e83.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_09f424d5-d4a6-4225-a0dc-4e2d42b66e83.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_204c5f1e-a65e-4b7b-b566-02e89f9133df.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_204c5f1e-a65e-4b7b-b566-02e89f9133df.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_23699e8b-9704-4da4-bd4f-3dfbe2891f74.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_23699e8b-9704-4da4-bd4f-3dfbe2891f74.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_5aa77514-f4e7-4b4a-a2e7-b6b38a56fac3.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_5aa77514-f4e7-4b4a-a2e7-b6b38a56fac3.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_5f0c2b77-ba15-4cf2-9dce-a2637c8a9a3a.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_5f0c2b77-ba15-4cf2-9dce-a2637c8a9a3a.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_5f8d8be0-9a6a-4570-9d93-ac3c2b3fd645.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_5f8d8be0-9a6a-4570-9d93-ac3c2b3fd645.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_8746d3ae-c260-42bf-82fe-324969f3b532.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_8746d3ae-c260-42bf-82fe-324969f3b532.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_9717e105-8d0b-4f22-b636-3b1b9210503e.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_9717e105-8d0b-4f22-b636-3b1b9210503e.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_cf5be125-8f66-463d-b94e-41029d1b7cdd.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_cf5be125-8f66-463d-b94e-41029d1b7cdd.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_d92e6a53-c84a-4d7c-b34b-1104574d4f94.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_d92e6a53-c84a-4d7c-b34b-1104574d4f94.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_d95cf77e-1683-454f-85d2-64fa13f5f87d.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_d95cf77e-1683-454f-85d2-64fa13f5f87d.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_e49baac1-099a-4030-a8b0-ca57cf874c4f.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_e49baac1-099a-4030-a8b0-ca57cf874c4f.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_e9c056b9-4e6d-4c20-8b9a-7036cf4c7079.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_e9c056b9-4e6d-4c20-8b9a-7036cf4c7079.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_f413bbb9-3aee-47ef-8a72-fdd102aec658.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_f413bbb9-3aee-47ef-8a72-fdd102aec658.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EventsWebApplication.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.EventsWebApplication.props",
+      "PackagePath": "build\\EventsWebApplication.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.EventsWebApplication.props",
+      "PackagePath": "buildMultiTargeting\\EventsWebApplication.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.EventsWebApplication.props",
+      "PackagePath": "buildTransitive\\EventsWebApplication.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

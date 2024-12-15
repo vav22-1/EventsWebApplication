@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import routes from './services/routes';
+import { refreshAccessToken } from './services/authService';
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const currentPath = window.location.pathname;
+      if (currentPath === '/') {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (refreshToken) {
+          const newAccessToken = await refreshAccessToken();
+          if (newAccessToken) {
+            navigate("/events");
+          } else {
+            navigate("/login");
+          }
+        } else {
+          navigate("/login");
+        }
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      {routes.map((route, index) => (
+        <Route key={index} path={route.path} element={<route.component />} />
+      ))}
+    </Routes>
   );
 }
 

@@ -1,6 +1,8 @@
-﻿using EventsWebApplication.Core.DTOs;
+﻿using AutoMapper;
+using EventsWebApplication.Core.DTOs;
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventsWebApplication.Api.Controllers
@@ -9,48 +11,92 @@ namespace EventsWebApplication.Api.Controllers
     [ApiController]
     public class ParticipantsController : ControllerBase
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ParticipantsController(IUnitOfWork unitOfWork)
+        public ParticipantsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
+
         [HttpGet("event/{eventId}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<IEnumerable<Participant>>> GetParticipantsByEventId(int eventId)
         {
             var participants = await _unitOfWork.Participants.GetParticipantsByEventIdAsync(eventId);
-            return Ok(participants);
+            var participantDtos = _mapper.Map<IEnumerable<ParticipantResponseDto>>(participants);
+            return Ok(participantDtos);
         }
+
         [HttpGet("{id}")]
+        [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetParticipantById(int id)
         {
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "0");
+            var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
+            if (user == null || user.ParticipantId != id)
+            {
+                return Forbid("Нет доступа к данным этого участника.");
+            }
             var participantItem = await _unitOfWork.Participants.GetParticipantByIdAsync(id);
             if (participantItem == null) return NotFound();
-            return Ok(participantItem);
+
+            var participantDto = _mapper.Map<ParticipantResponseDto>(participantItem);
+            return Ok(participantDto);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> RegisterParticipant([FromBody] ParticipantDto participantDto)
+        [HttpPost("register/{eventId}")]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<ActionResult> RegisterParticipant(int eventId)
         {
-            var participant = new Participant
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "0");
+            var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
+            if (user == null || user.ParticipantId == null)
             {
-                FirstName = participantDto.FirstName,
-                LastName = participantDto.LastName,
-                DateOfBirth = participantDto.DateOfBirth,
-                Email = participantDto.Email,
-                EventId = participantDto.EventId,
-                DateOfRegistration = DateTime.UtcNow
-            };
-            await _unitOfWork.Participants.AddParticipantAsync(participant);
+                return NotFound("Пользователь не найден или нет участника.");
+            }
+            var participantId = user.ParticipantId;
+            await _unitOfWork.Participants.AddParticipantToEventAsync(eventId, (int)participantId);
             await _unitOfWork.CompleteAsync();
-            return CreatedAtAction(nameof(GetParticipantById), new { id = participant.Id }, participant);
+
+            return NoContent();
+        }
+        [HttpPut("{id}")]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<IActionResult> UpdateParticipant(int id, [FromBody] ParticipantRequestDto participantDto)
+        {
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "0");
+            var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
+            if (user == null || user.ParticipantId != id)
+            {
+                return Forbid("Нет доступа к данным этого участника.");
+            }
+
+            var participant = await _unitOfWork.Participants.GetParticipantByIdAsync(id);
+            if (participant == null) return NotFound();
+
+            _mapper.Map(participantDto, participant);
+            await _unitOfWork.Participants.UpdateParticipantAsync(participant);
+            await _unitOfWork.CompleteAsync();
+
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteParticipant(int id)
+        [HttpDelete("remove/{eventId}/{id}")]
+        [Authorize(Policy = "UserPolicy")]
+        public async Task<ActionResult> DeleteParticipantFromEvent(int eventId, int id)
         {
-            await _unitOfWork.Participants.DeleteParticipantAsync(id);
+            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "0");
+            var user = await _unitOfWork.Users.GetUserByIdAsync(userId);
+            if (user == null || user.ParticipantId != id)
+            {
+                return Forbid("Нет доступа к данным этого участника.");
+            }
+
+            await _unitOfWork.Participants.RemoveParticipantFromEventAsync(eventId, id);
             await _unitOfWork.CompleteAsync();
+
             return NoContent();
         }
     }

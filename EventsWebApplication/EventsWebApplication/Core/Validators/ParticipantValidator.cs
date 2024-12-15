@@ -1,23 +1,27 @@
 ﻿using FluentValidation;
-using EventsWebApplication.Core.Models;
+using EventsWebApplication.Core.DTOs;
 
 namespace EventsWebApplication.Core.Validators
 {
-    public class ParticipantValidator : AbstractValidator<Participant>
+    public class ParticipantValidator : AbstractValidator<ParticipantRequestDto>
     {
         public ParticipantValidator()
         {
-            RuleFor(e => e.FirstName)
-                .NotEmpty().WithMessage("Имя обязательно");
+            RuleFor(p => p.FirstName)
+                .NotEmpty().WithMessage("Имя обязательно")
+                .MaximumLength(50).WithMessage("Имя не должно превышать 50 символов");
 
-            RuleFor(e => e.LastName)
-                .NotEmpty().WithMessage("Фамилия обязательна");
-            RuleFor(e => e.Email)
+            RuleFor(p => p.LastName)
+                .NotEmpty().WithMessage("Фамилия обязательна")
+                .MaximumLength(50).WithMessage("Фамилия не должна превышать 50 символов");
+
+            RuleFor(p => p.DateOfBirth)
+                .LessThan(DateTime.Now).WithMessage("Дата рождения должна быть в прошлом")
+                .GreaterThan(DateTime.Now.AddYears(-120)).WithMessage("Возраст должен быть не старше 120 лет");
+
+            RuleFor(p => p.Email)
+                .NotEmpty().WithMessage("Email обязателен")
                 .EmailAddress().WithMessage("Некорректный Email");
-            RuleFor(e => e.DateOfBirth)
-                .LessThan(DateTime.Now).WithMessage("Дата рождения должна быть в прошлом");
-            RuleFor(e => e.EventId)
-                .GreaterThan(0).WithMessage("Неверный идентификатор события");
         }
     }
 }

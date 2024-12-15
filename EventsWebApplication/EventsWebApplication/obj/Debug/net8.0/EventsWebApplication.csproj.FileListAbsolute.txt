@@ -170,3 +170,6 @@ C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\Events
 C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\FluentValidation.dll
 C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
 C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\EventsWebApplication.staticwebassets.runtime.json
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

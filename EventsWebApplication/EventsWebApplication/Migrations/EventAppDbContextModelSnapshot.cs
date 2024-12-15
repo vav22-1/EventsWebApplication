@@ -38,11 +38,9 @@ namespace EventsWebApplication.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -61,6 +59,46 @@ namespace EventsWebApplication.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("EventsWebApplication.Core.Models.EventParticipant", b =>
+                {
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EventId", "ParticipantId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("EventParticipants");
+                });
+
+            modelBuilder.Entity("EventsWebApplication.Core.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("EventsWebApplication.Core.Models.Participant", b =>
                 {
                     b.Property<int>("Id")
@@ -69,48 +107,122 @@ namespace EventsWebApplication.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfRegistration")
+                    b.Property<DateTime?>("DateOfRegistration")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Participants");
+                });
+
+            modelBuilder.Entity("EventsWebApplication.Core.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Password")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiry")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("ParticipantId")
+                        .IsUnique()
+                        .HasFilter("[ParticipantId] IS NOT NULL");
 
-                    b.ToTable("Participants");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("EventsWebApplication.Core.Models.Participant", b =>
+            modelBuilder.Entity("EventsWebApplication.Core.Models.EventParticipant", b =>
                 {
                     b.HasOne("EventsWebApplication.Core.Models.Event", "Event")
-                        .WithMany("Participants")
+                        .WithMany("EventParticipants")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EventsWebApplication.Core.Models.Participant", "Participant")
+                        .WithMany("EventParticipants")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Event");
+
+                    b.Navigation("Participant");
+                });
+
+            modelBuilder.Entity("EventsWebApplication.Core.Models.Notification", b =>
+                {
+                    b.HasOne("EventsWebApplication.Core.Models.Participant", "Participant")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Participant");
+                });
+
+            modelBuilder.Entity("EventsWebApplication.Core.Models.User", b =>
+                {
+                    b.HasOne("EventsWebApplication.Core.Models.Participant", "Participant")
+                        .WithOne("User")
+                        .HasForeignKey("EventsWebApplication.Core.Models.User", "ParticipantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("EventsWebApplication.Core.Models.Event", b =>
                 {
-                    b.Navigation("Participants");
+                    b.Navigation("EventParticipants");
+                });
+
+            modelBuilder.Entity("EventsWebApplication.Core.Models.Participant", b =>
+                {
+                    b.Navigation("EventParticipants");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

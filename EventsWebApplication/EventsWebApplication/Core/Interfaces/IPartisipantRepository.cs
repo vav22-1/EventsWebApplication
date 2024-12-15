@@ -8,5 +8,8 @@ namespace EventsWebApplication.Core.Interfaces
         Task<Participant> GetParticipantByIdAsync(int id);
         Task AddParticipantAsync(Participant participant);
         Task DeleteParticipantAsync(int id);
+        Task UpdateParticipantAsync(Participant participant);
+        Task AddParticipantToEventAsync(int eventId, int participantId);
+        Task RemoveParticipantFromEventAsync(int eventId, int participantId);
     }
 }

@@ -4,6 +4,8 @@
     {
         IEventRepository Events { get; }
         IPartisipantRepository Participants { get; }
+        IUserRepository Users { get; }
+        INotificationRepository Notifications { get; }
         Task CompleteAsync();
     }
 }

@@ -5,14 +5,17 @@ namespace EventsWebApplication.Core.Models
     public class Participant
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public DateTime DateOfRegistration { get; set; }
-        public string Email { get; set; }
-        public int EventId { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public DateTime? DateOfRegistration { get; set; }
+        public string? Email { get; set; }
 
         [JsonIgnore]
-        public Event Event { get; set; }
+        public User User { get; set; }
+
+        public ICollection<EventParticipant> EventParticipants { get; set; } = new List<EventParticipant>();
+        
+        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }
