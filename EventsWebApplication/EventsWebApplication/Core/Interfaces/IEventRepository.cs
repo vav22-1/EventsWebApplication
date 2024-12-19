@@ -1,5 +1,6 @@
 ﻿using EventsWebApplication.Core.DTOs;
 using EventsWebApplication.Core.Models;
+
 namespace EventsWebApplication.Core.Interfaces
 {
     public interface IEventRepository

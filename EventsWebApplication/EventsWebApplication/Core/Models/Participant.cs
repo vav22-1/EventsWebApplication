@@ -15,7 +15,7 @@ namespace EventsWebApplication.Core.Models
         public User User { get; set; }
 
         public ICollection<EventParticipant> EventParticipants { get; set; } = new List<EventParticipant>();
-        
+
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

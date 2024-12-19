@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/axiosConfig";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ConfirmationModal from "../components/ConfirmationModal";
-import NotificationsButton from '../components/NotificationsButton';
+import Menu from '../components/Menu';
+import Toast from '../components/Toast';
 
 
 const EventDetails = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState(null);
   const [validationErrors, setValidationErrors] = useState({});
+
   const [isRegistered, setIsRegistered] = useState(false);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
+
+  const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -43,7 +48,6 @@ const EventDetails = () => {
         } else {
           setIsRegistered(false);
         }
-
         setEvent(response.data);
       } catch (error) {
         setError("Ошибка при загрузке данных.");
@@ -65,12 +69,13 @@ const EventDetails = () => {
         ...prevEvent,
         availableSeats: seatsResponse.data.availableSeats,
       }));
+      setToastMessage("Вы успешно зарегистрировались на событие.");
       setIsRegistered(true);
     } catch (err) {
       if (err.response && err.response.status === 400 && err.response.data.errors) {
         setValidationErrors(err.response.data.errors);
       } else {
-        alert("Ошибка при регистрации.");
+        setToastMessage("Ошибка при регистрации.");
         console.error("Ошибка при регистрации:", err);
       }
     } finally {
@@ -96,51 +101,56 @@ const EventDetails = () => {
 
   return (
     <div>
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
+      )}
+  
       <div>
-        <button onClick={() => navigate('/events')}>К списку событий</button>
-        <button onClick={() => navigate(`/account/${localStorage.getItem("participantId")}`)}>Личный кабинет</button>
-        <button onClick={() => navigate(`/update-event/${id}`)}>Обновить событие</button>
-        <NotificationsButton />
+        <Menu selectedEventId={id} />
       </div>
-      <div>
+  
+      <div className="event-details">
         {event.imageUrl && (
-          <img
-            src={event.imageUrl}
-            alt={event.title}
-            width="800"
-          />
+          <img src={event.imageUrl} alt={event.title} />
         )}
+  
         <h1>{event.title}</h1>
-        <p>Описание события: {event.description}</p>
+        <p>{event.description}</p>
         <p>Дата: {new Date(event.dateAndTime).toLocaleDateString()}</p>
         <p>Время: {new Date(event.dateAndTime).toLocaleTimeString()}</p>
         <p>Место проведения: {event.location}</p>
         <p>Категория: {event.category}</p>
-
+  
+        <div>
+          {event.availableSeats <= 0 ? (
+            <p>Свободных мест не осталось</p>
+          ) : (
+            <div>
+              <p>Осталось мест: {event.availableSeats}</p>
+            </div>
+          )}
+        </div>
+  
         {isRegistered ? (
           <p>Вы уже зарегистрированы на это событие.</p>
         ) : (
           <div>
-            {event.availableSeats <= 0 ? (
-              <p>Свободных мест не осталось</p>
-            ) : (
-              <div>
-                <p>Осталось мест: {event.availableSeats}</p>
-                <button onClick={openModal}>Зарегистрироваться</button>
-                {validationErrors.registration && <div className="error">{validationErrors.registration[0]}</div>}
-              </div>
+            <button onClick={openModal}>Зарегистрироваться</button>
+            {validationErrors.registration && (
+              <div className="error">{validationErrors.registration[0]}</div>
             )}
           </div>
         )}
       </div>
+  
       <ConfirmationModal
-          isOpen={isModalOpen}
-          onConfirm={handleRegister}
-          onCancel={closeModal}
-          message="Вы уверены, что хотите зарегистрироваться на это событие?"
+        isOpen={isModalOpen}
+        onConfirm={handleRegister}
+        onCancel={closeModal}
+        message="Вы уверены, что хотите зарегистрироваться на это событие?"
       />
     </div>
   );
-};
+};  
 
 export default EventDetails;

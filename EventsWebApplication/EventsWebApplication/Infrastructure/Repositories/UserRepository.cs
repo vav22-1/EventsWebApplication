@@ -1,8 +1,6 @@
 ﻿using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
-using EventsWebApplication.Infrasturture.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
+using EventsWebApplication.Infrastructure.Data;
 using System.Security.Cryptography;
 using System.Text;
 

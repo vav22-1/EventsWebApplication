@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using EventsWebApplication.Core.DTOs;
-using AutoMapper;
+﻿using EventsWebApplication.Core.DTOs;
 using EventsWebApplication.Core.Models;
-using Microsoft.AspNetCore.Identity;
 using EventsWebApplication.Core.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Azure.Core;
 
 namespace EventsWebApplication.Api.Controllers
 {
@@ -22,7 +17,7 @@ namespace EventsWebApplication.Api.Controllers
         private readonly IMapper _mapper;
         public UserController(IUnitOfWork unitOfWork, IConfiguration configuration, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;   
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
             _mapper = mapper;
         }

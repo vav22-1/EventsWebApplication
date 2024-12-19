@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace EventsWebApplication.Core.Models
+﻿namespace EventsWebApplication.Core.Models
 {
     public class Event
     {
@@ -13,6 +11,6 @@ namespace EventsWebApplication.Core.Models
         public int MaxParticipants { get; set; }
         public string? ImagePath { get; set; }
         public ICollection<EventParticipant> EventParticipants { get; set; } = new List<EventParticipant>();
-        
+
     }
 }

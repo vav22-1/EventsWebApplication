@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace EventsWebApplication.Infrastructure
+﻿namespace EventsWebApplication.Infrastructure
 {
     public class ImageSaver
     {
@@ -11,14 +9,14 @@ namespace EventsWebApplication.Infrastructure
         }
         public async Task<string> SaveImageAsync(IFormFile image)
         {
-            if(image == null)
+            if (image == null)
             {
                 return null;
             }
             var fileName = Path.GetFileNameWithoutExtension(image.FileName) + "_" + Guid.NewGuid() + Path.GetExtension(image.FileName);
             var filePath = Path.Combine(_imagePath, fileName);
-            
-            using(var imageStream = new FileStream(filePath,FileMode.Create))
+
+            using (var imageStream = new FileStream(filePath, FileMode.Create))
             {
                 await image.CopyToAsync(imageStream);
             }

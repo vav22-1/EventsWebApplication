@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using EventsWebApplication.Core.Models;
+﻿using EventsWebApplication.Core.Models;
 
-namespace EventsWebApplication.Infrasturture.Data;
+namespace EventsWebApplication.Infrastructure.Data;
 
 public class EventAppDbContext : DbContext
 {
@@ -20,7 +19,7 @@ public class EventAppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<EventParticipant>()
-                .HasKey(ep => new { ep.EventId, ep.ParticipantId });
+            .HasKey(ep => new { ep.EventId, ep.ParticipantId });
 
         modelBuilder.Entity<EventParticipant>()
             .HasOne(ep => ep.Event)
@@ -33,10 +32,10 @@ public class EventAppDbContext : DbContext
             .HasForeignKey(ep => ep.ParticipantId);
 
         modelBuilder.Entity<Notification>()
-        .HasOne(n => n.Participant)
-        .WithMany(p => p.Notifications)
-        .HasForeignKey(n => n.ParticipantId)
-        .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(n => n.Participant)
+            .WithMany(p => p.Notifications)
+            .HasForeignKey(n => n.ParticipantId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
     }

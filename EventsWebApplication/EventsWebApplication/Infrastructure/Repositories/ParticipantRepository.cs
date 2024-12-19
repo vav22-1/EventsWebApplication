@@ -1,7 +1,6 @@
 ﻿using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
-using EventsWebApplication.Infrasturture.Data;
-using Microsoft.EntityFrameworkCore;
+using EventsWebApplication.Infrastructure.Data;
 
 namespace EventsWebApplication.Infrastructure.Repositories
 {
@@ -16,7 +15,7 @@ namespace EventsWebApplication.Infrastructure.Repositories
         public async Task<Participant> GetParticipantByIdAsync(int id)
         {
             return await _dbContext.Participants
-                .Include(ep=> ep.EventParticipants)
+                .Include(ep => ep.EventParticipants)
                 .ThenInclude(ep => ep.Event)
                 .FirstOrDefaultAsync(ep => ep.Id == id);
         }

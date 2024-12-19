@@ -19,7 +19,7 @@ const NotificationsButton = () => {
             <img src={crossIcon} alt="Закрыть уведомления" width={24} height={24} />
         )}
       </button>
-      <NotificationsOverlay isOpen={isOverlayOpen} close={toggleOverlay} />
+      <NotificationsOverlay className="notifications-overlay" isOpen={isOverlayOpen} close={toggleOverlay} />
     </div>
   );
 };

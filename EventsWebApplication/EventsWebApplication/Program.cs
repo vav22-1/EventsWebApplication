@@ -1,7 +1,7 @@
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Validators;
 using EventsWebApplication.Infrastructure;
-using EventsWebApplication.Infrasturture.Data;
+using EventsWebApplication.Infrastructure.Data;
 using EventsWebApplication.Api.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

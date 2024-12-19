@@ -1,7 +1,6 @@
 ﻿using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
-using EventsWebApplication.Infrasturture.Data;
-using Microsoft.EntityFrameworkCore;
+using EventsWebApplication.Infrastructure.Data;
 
 namespace EventsWebApplication.Infrastructure.Repositories
 {
@@ -34,7 +33,7 @@ namespace EventsWebApplication.Infrastructure.Repositories
                 {
                     ParticipantId = participant.Id,
                     Message = message,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 await AddNotificationAsync(notification);

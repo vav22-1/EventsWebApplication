@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using EventsWebApplication.Core.DTOs;
+﻿using EventsWebApplication.Core.DTOs;
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
 using EventsWebApplication.Infrastructure;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Api.Controllers
 {
@@ -24,7 +20,7 @@ namespace EventsWebApplication.Api.Controllers
             _mapper = mapper;
         }
 
-        
+
         [HttpGet]
         [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetAllEvents()
@@ -72,12 +68,41 @@ namespace EventsWebApplication.Api.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> UpdateEvent(int id, [FromBody] EventRequestDto updatedEventDto)
         {
-            Event updatedEvent = await _unitOfWork.Events.GetEventByIdAsync(id);
             var eventToUpdate = await _unitOfWork.Events.GetEventByIdAsync(id);
             if (eventToUpdate == null) return NotFound();
 
+
+            var oldEvent = new Event
+            {
+                Title = eventToUpdate.Title,
+                Description = eventToUpdate.Description,
+                DateAndTime = eventToUpdate.DateAndTime,
+                Location = eventToUpdate.Location,
+                Category = eventToUpdate.Category,
+                MaxParticipants = eventToUpdate.MaxParticipants
+            };
+
             _mapper.Map(updatedEventDto, eventToUpdate);
-            await _unitOfWork.Notifications.NotifyParticipantsAboutEventChange(await _unitOfWork.Participants.GetParticipantsByEventIdAsync(id), $"Событие {updatedEvent.Title} было изменено");
+            eventToUpdate.DateAndTime = eventToUpdate.DateAndTime.AddHours(3);
+
+            var changesMessage = $"Событие {oldEvent.Title} было изменено. Изменения: ";
+            if (eventToUpdate.Title != oldEvent.Title)
+                changesMessage += $"Название было изменено с \"{oldEvent.Title}\" на \"{eventToUpdate.Title}\". ";
+            if (eventToUpdate.Description != oldEvent.Description)
+                changesMessage += $"Описание было изменено. ";
+            if (eventToUpdate.DateAndTime != oldEvent.DateAndTime)
+                changesMessage += $"Дата и время были изменены с \"{oldEvent.DateAndTime:dd.MM.yyyy HH:mm}\" на \"{eventToUpdate.DateAndTime:dd.MM.yyyy HH:mm}\". ";
+            if (eventToUpdate.Location != oldEvent.Location)
+                changesMessage += $"Место проведения было изменено с \"{oldEvent.Location}\" на \"{eventToUpdate.Location}\". ";
+            if (eventToUpdate.Category != oldEvent.Category)
+                changesMessage += $"Категория была изменена с \"{oldEvent.Category}\" на \"{eventToUpdate.Category}\". ";
+            if (eventToUpdate.MaxParticipants != oldEvent.MaxParticipants)
+                changesMessage += $"Максимальное количество участников было изменено с {oldEvent.MaxParticipants} на {eventToUpdate.MaxParticipants}. ";
+
+            await _unitOfWork.Notifications.NotifyParticipantsAboutEventChange(
+                await _unitOfWork.Participants.GetParticipantsByEventIdAsync(id),
+                changesMessage);
+
             await _unitOfWork.Events.UpdateEventAsync(eventToUpdate);
             await _unitOfWork.CompleteAsync();
             return NoContent();
@@ -101,14 +126,14 @@ namespace EventsWebApplication.Api.Controllers
             var eventToUpdate = await _unitOfWork.Events.GetEventByIdAsync(id);
             if (eventToUpdate == null) return NotFound();
             var imagePath = await _imageSaver.SaveImageAsync(image);
-            if(string.IsNullOrEmpty(imagePath))
+            if (string.IsNullOrEmpty(imagePath))
             {
                 return BadRequest("Ошибка загрузки изображения");
             }
             eventToUpdate.ImagePath = imagePath;
             await _unitOfWork.CompleteAsync();
 
-            return Ok(new { ImagePath = imagePath});
+            return Ok(new { ImagePath = imagePath });
         }
 
         [HttpGet("{eventId}/image")]
@@ -134,7 +159,7 @@ namespace EventsWebApplication.Api.Controllers
 
         [HttpGet("filter")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<IActionResult> GetEventsByFilter([FromQuery] EventFilterDto filter, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetEventsByFilter([FromQuery] EventFilterDto filter, int page = 1, int pageSize = 8)
         {
             var query = _unitOfWork.Events.GetEventsWithFilterQuery(filter);
 
@@ -154,10 +179,10 @@ namespace EventsWebApplication.Api.Controllers
 
         [HttpGet("{id}/available-seats")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<IActionResult> GetAvailableSeats(int id) 
+        public async Task<IActionResult> GetAvailableSeats(int id)
         {
             var availableSeats = await _unitOfWork.Events.GetAvailableSeatsAsync(id);
-            return Ok(new { AvailableSeats = availableSeats }); 
+            return Ok(new { AvailableSeats = availableSeats });
         }
     }
 }

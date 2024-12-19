@@ -18,8 +18,6 @@ export const refreshAccessToken = async () => {
         return response.data.accessToken;
     } catch (error) {
         console.error('Ошибка обновления токенов:', error);
-        console.log(error.data)
-        alert(123)
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('participantId');

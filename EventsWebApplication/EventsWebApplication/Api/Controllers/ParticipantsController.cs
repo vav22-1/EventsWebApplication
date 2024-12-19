@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using EventsWebApplication.Core.DTOs;
+﻿using EventsWebApplication.Core.DTOs;
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EventsWebApplication.Api.Controllers
 {

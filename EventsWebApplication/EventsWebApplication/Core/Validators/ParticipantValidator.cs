@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using EventsWebApplication.Core.DTOs;
+﻿using EventsWebApplication.Core.DTOs;
 
 namespace EventsWebApplication.Core.Validators
 {

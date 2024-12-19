@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using EventsWebApplication.Core.DTOs;
+﻿using EventsWebApplication.Core.DTOs;
 
 namespace EventsWebApplication.Core.Validators
 {
@@ -15,7 +14,7 @@ namespace EventsWebApplication.Core.Validators
                 .MaximumLength(500).WithMessage("Описание не должно превышать 500 символов");
 
             RuleFor(e => e.DateAndTime)
-                .GreaterThan(DateTime.Now).WithMessage("Дата проведения не может быть в прошлом");
+                .GreaterThan(DateTime.UtcNow).WithMessage("Дата проведения не может быть в прошлом");
 
             RuleFor(e => e.MaxParticipants)
                 .GreaterThan(0).WithMessage("Максимальное количество участников должно быть больше 0")

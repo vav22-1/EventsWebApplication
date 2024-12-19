@@ -1,0 +1,97 @@
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .menu-left {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .menu-right {
+    position: relative;
+  }
+  
+  .menu-button {
+    padding: 8px 16px;
+    background-color: #71c737;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu-button:hover {
+    background-color: #60ac2d;
+  }
+  
+  /* Кнопка уведомлений */
+.notifications-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #333;
+    z-index: 1001; /* Устанавливаем высокий z-index, чтобы кнопка была поверх */
+  }
+  
+  .notifications-button:hover {
+    color: #007bff;
+  }
+  
+  /* Выдвижная панель уведомлений */
+  .notifications-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 300px; /* Ширина панели */
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 1000; /* Устанавливаем z-index для панели чуть ниже кнопки */
+    transition: transform 0.3s ease; /* Плавное выдвижение */
+    transform: translateX(100%); /* Скрываем панель по умолчанию */
+  }
+  
+  .notifications-overlay.open {
+    transform: translateX(0); /* Показываем панель */
+  }
+  
+  /* Стили для контейнера уведомлений */
+  .notifications-container {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notifications-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .notification-item {
+    margin-bottom: 15px;
+  }
+  
+  .notification-time {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  
+  

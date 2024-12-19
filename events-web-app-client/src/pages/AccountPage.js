@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/axiosConfig";
 import { useNavigate, useParams } from 'react-router-dom';
-import NotificationsButton from '../components/NotificationsButton';
+import Menu from '../components/Menu';
+import Toast from '../components/Toast';
 
 const AccountDetails = () => {
   const { id } = useParams();
@@ -12,8 +13,11 @@ const AccountDetails = () => {
     Email: ""
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  
   const [validationErrors, setValidationErrors] = useState({});
+
+  const [toastMessage, setToastMessage] = useState('');
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +35,7 @@ const AccountDetails = () => {
           Email: response.data.email || ""
         });
       } catch (err) {
-        setError("Ошибка при загрузке данных.");
+        setToastMessage("Ошибка при загрузке данных.");
         console.error("Ошибка при запросе:", err);
       } finally {
         setLoading(false);
@@ -39,7 +43,7 @@ const AccountDetails = () => {
     };
 
     fetchParticipant();
-  }, [participant, id]);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,13 +64,13 @@ const AccountDetails = () => {
       };
   
       await api.put(`/Participants/${id}`, formattedParticipant);
-      alert("Данные успешно сохранены!");
+      setToastMessage("Данные успешно сохранены!");
       setValidationErrors({});
     } catch (err) {
       if (err.response && err.response.status === 400 && err.response.data.errors) {
         setValidationErrors(err.response.data.errors);
       } else {
-        alert("Ошибка при сохранении данных.");
+        setToastMessage("Ошибка при сохранении данных.");
         console.error("Ошибка при сохранении:", err);
       }
     }
@@ -81,64 +85,84 @@ const AccountDetails = () => {
     return <div>Загрузка...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
-    <div>
+    <div className="account-details">
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
+      )}
+      
       <div>
-        <button onClick={() => navigate('/events')}>К списку событий</button>
-        <button onClick={() => navigate('/my-events')}>Мои события</button>
-        <NotificationsButton />
+        <Menu />
       </div>
-
-      <form>
-        <div>
+  
+      <form className="account-form">
+        <div className="form-group">
           <label>Имя:</label>
           <input
             type="text"
             name="FirstName"
             value={participant.FirstName}
             onChange={handleChange}
+            className="input-field"
           />
-          {validationErrors.FirstName && <div className="error">{validationErrors.FirstName[0]}</div>}
+          {validationErrors.FirstName && (
+            <div className="error">{validationErrors.FirstName[0]}</div>
+          )}
         </div>
-        <div>
+  
+        <div className="form-group">
           <label>Фамилия:</label>
           <input
             type="text"
             name="LastName"
             value={participant.LastName}
             onChange={handleChange}
+            className="input-field"
           />
-          {validationErrors.LastName && <div className="error">{validationErrors.LastName[0]}</div>}
+          {validationErrors.LastName && (
+            <div className="error">{validationErrors.LastName[0]}</div>
+          )}
         </div>
-        <div>
+  
+        <div className="form-group">
           <label>Дата рождения:</label>
           <input
             type="date"
             name="DateOfBirth"
             value={participant.DateOfBirth}
             onChange={handleChange}
+            className="input-field"
           />
-          {validationErrors.DateOfBirth && <div className="error">{validationErrors.DateOfBirth[0]}</div>}
+          {validationErrors.DateOfBirth && (
+            <div className="error">{validationErrors.DateOfBirth[0]}</div>
+          )}
         </div>
-        <div>
+  
+        <div className="form-group">
           <label>Email:</label>
           <input
             type="email"
             name="Email"
             value={participant.Email}
             onChange={handleChange}
+            className="input-field"
           />
-          {validationErrors.Email && <div className="error">{validationErrors.Email[0]}</div>}
+          {validationErrors.Email && (
+            <div className="error">{validationErrors.Email[0]}</div>
+          )}
         </div>
-        <button type="button" onClick={handleSave}>Сохранить</button>
-        <button onClick={handleLogout}>Выйти из аккаунта</button>
+  
+        <div className="form-actions">
+          <button type="button" onClick={handleSave} className="save-button">
+            Сохранить
+          </button>
+          <button onClick={handleLogout} className="logout-button">
+            Выйти из аккаунта
+          </button>
+        </div>
       </form>
     </div>
   );
-};
+};  
 
 export default AccountDetails;

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using EventsWebApplication.Core.Models;
+﻿using EventsWebApplication.Core.Models;
 using EventsWebApplication.Core.DTOs;
 using System.Security.Cryptography;
 using System.Text;

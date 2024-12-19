@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import api from '../services/axiosConfig';
-import "../css/Notifications.css";
 
 const NotificationsOverlay = ({ isOpen, close }) => {
   const [notifications, setNotifications] = useState([]);
@@ -31,7 +30,7 @@ const NotificationsOverlay = ({ isOpen, close }) => {
     return new Date(date).toLocaleTimeString([], options);
   };
 
-  if (!isOpen) return null; // Если панель не открыта, ничего не отображаем
+  if (!isOpen) return null;
 
   return (
     <div className={`notifications-overlay ${isOpen ? 'open' : ''}`} onClick={close}>

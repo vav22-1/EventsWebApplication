@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/axiosConfig";
 import { useNavigate } from "react-router-dom";
-import NotificationsButton from '../components/NotificationsButton';
+import ConfirmationModal from "../components/ConfirmationModal";
+import Menu from '../components/Menu';
+import Toast from '../components/Toast';
 
 const AccountEventsList = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [filter, setFilter] = useState({
     title: "",
     filterDate: "",
@@ -17,6 +18,11 @@ const AccountEventsList = () => {
   const [pageSize] = useState(3);
 
   const [debounceTimer, setDebounceTimer] = useState(null);
+
+  const [toastMessage, setToastMessage] = useState('');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [eventToUnregister, setEventToUnregister] = useState(null);
 
   const navigate = useNavigate();
 
@@ -52,18 +58,17 @@ const AccountEventsList = () => {
               const seatsResponse = await api.get(`/Events/${event.id}/available-seats`);
               event.availableSeats = seatsResponse.data.availableSeats;
             } catch (error) {
+              setToastMessage(`Ошибка загрузки данных для события ${event.id}`);
               console.error(`Ошибка загрузки данных для события ${event.id}:`, error);
               event.imageUrl = null;
             }
             return event;
           })
         );
-
         const filteredEvents = eventsWithData.filter(event => eventIds.includes(event.id));
-
         setEvents(filteredEvents);
       } catch (error) {
-        setError("Ошибка при загрузке данных.");
+        setToastMessage("Ошибка при загрузке данных.");
         console.error("Error during request:", error);
       } finally {
         setLoading(false);
@@ -89,34 +94,57 @@ const AccountEventsList = () => {
     setDebounceTimer(timer);
   };
 
-  const handleUnregister = async (eventId) => {
+  const openModalForUnregister = (eventId) => {
+    setEventToUnregister(eventId);
+    setIsModalOpen(true);
+  };
+
+  const handleUnregister = async () => {
     try {
       const participantId = localStorage.getItem("participantId");
-      await api.delete(`/Participants/remove/${eventId}/${participantId}`);
-      setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+      await api.delete(`/Participants/remove/${eventToUnregister}/${participantId}`);
+      setEvents(prevEvents => prevEvents.filter(event => event.id !== eventToUnregister));
+      setToastMessage("Вы успешно отменили участие в событии");
     } catch (error) {
-      setError("Ошибка при отмене регистрации.");
+      setToastMessage("Ошибка при отмене регистрации.");
       console.error("Error during unregistering:", error);
+    } finally {
+      closeModal();
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEventToUnregister(null);
   };
 
   if (loading) {
     return <div>Загрузка...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
     <div>
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
+      )}
+  
       <div>
-        <button onClick={() => navigate(`/account/${localStorage.getItem("participantId")}`)}>Личный кабинет</button>
-        <NotificationsButton />
+        <Menu />
       </div>
-      <div>
-        <h1>Мои события</h1>
-        
+  
+      <div className="eventlist">
+        <div className="page-navigation">
+          <button onClick={() => setPage(prevPage => prevPage - 1)} disabled={page <= 1}>
+            Назад
+          </button>
+          <span>Страница {page}</span>
+          {events.length === pageSize && (
+            <button onClick={() => setPage(prevPage => prevPage + 1)}>
+              Вперед
+            </button>
+          )}
+        </div>
+  
         <div>
           <input
             type="text"
@@ -151,42 +179,31 @@ const AccountEventsList = () => {
           <p>Вы не участвуете ни в одном событии.</p>
         ) : (
           <ul>
-            {events.map((event, index) => (
-              <div key={event.id}>
-                <li>
-                  <p>№ {index + 1 + (page - 1) * pageSize}</p> {/* Нумерация объектов */}
-                  {event.imageUrl ? (
-                    <img src={event.imageUrl} alt={event.title} width="200" />
-                  ) : (
-                    <p>Изображение отсутствует</p>
-                  )}
-                  <p>{event.title}</p>
-                  <p>Дата: {new Date(event.dateAndTime).toLocaleDateString()}</p>
-                  <button onClick={() => navigate(`/events/${event.id}`)}>Подробнее</button>
-                  <button onClick={() => handleUnregister(event.id)}>Отменить участие</button>
-                </li>
-              </div>
+            {events.map(event => (
+              <li key={event.id}>
+                {event.imageUrl ? (
+                  <img src={event.imageUrl} alt={event.title} width="200" />
+                ) : (
+                  <p>Изображение отсутствует</p>
+                )}
+                <p>{event.title}</p>
+                <p>Дата: {new Date(event.dateAndTime).toLocaleDateString()}</p>
+                <button onClick={() => navigate(`/events/${event.id}`)}>Подробнее</button>
+                <button onClick={() => openModalForUnregister(event.id)}>Отменить участие</button>
+              </li>
             ))}
           </ul>
         )}
-  
-        <div>
-          {/* Кнопка назад */}
-          {page > 1 && (
-            <button onClick={() => setPage(prevPage => prevPage - 1)}>Назад</button>
-          )}
-
-          {/* Нумерация страниц */}
-          <span>Страница {page}</span>
-
-          {/* Кнопка вперед */}
-          {events.length === pageSize && (
-            <button onClick={() => setPage(prevPage => prevPage + 1)}>Вперед</button>
-          )}
-        </div>
       </div>
+  
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onConfirm={handleUnregister}
+        onCancel={closeModal}
+        message="Вы уверены, что хотите отменить участие в этом событии?"
+      />
     </div>
   );
 };
-
+  
 export default AccountEventsList;

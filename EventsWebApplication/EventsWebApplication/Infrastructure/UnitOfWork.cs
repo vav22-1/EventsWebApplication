@@ -1,14 +1,14 @@
 ﻿using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Infrastructure.Repositories;
-using EventsWebApplication.Infrasturture.Data;
+using EventsWebApplication.Infrastructure.Data;
 
 namespace EventsWebApplication.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly EventAppDbContext _dbContext;
-        public IEventRepository Events {  get; set; }
-        public IPartisipantRepository Participants {  get; set; }
+        public IEventRepository Events { get; set; }
+        public IPartisipantRepository Participants { get; set; }
         public IUserRepository Users { get; set; }
         public INotificationRepository Notifications { get; set; }
 

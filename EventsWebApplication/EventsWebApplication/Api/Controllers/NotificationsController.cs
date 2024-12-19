@@ -1,6 +1,4 @@
 ﻿using EventsWebApplication.Core.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EventsWebApplication.Api.Controllers
 {

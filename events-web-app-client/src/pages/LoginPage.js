@@ -48,30 +48,49 @@ function LoginPage() {
     };
 
     return (
-        <div>
-            <h1>Авторизация</h1>
+        <div className="login-container">
+          <h1 className="login-title">Авторизация</h1>
+      
+          <div className="form-group">
             <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Логин"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Логин"
+              className="input-field"
             />
-            {validationErrors.Username && <div className="error">{validationErrors.Username[0]}</div>}
-
+            {validationErrors.Username && (
+              <div className="error">{validationErrors.Username[0]}</div>
+            )}
+          </div>
+      
+          <div className="form-group">
             <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Пароль"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Пароль"
+              className="input-field"
             />
-            {validationErrors.Password && <div className="error">{validationErrors.Password[0]}</div>}
-
-            {validationErrors.general && <div className="error">{validationErrors.general[0]}</div>}
-
-            <button onClick={handleLogin}>Войти</button>
-            <button onClick={() => navigate('/register')}>Зарегистрироваться</button>
+            {validationErrors.Password && (
+              <div className="error">{validationErrors.Password[0]}</div>
+            )}
+          </div>
+      
+          {validationErrors.general && (
+            <div className="error general-error">{validationErrors.general[0]}</div>
+          )}
+      
+          <div className="form-actions">
+            <button onClick={handleLogin} className="login-button">
+              Войти
+            </button>
+            <button onClick={() => navigate('/register')} className="register-button">
+              Зарегистрироваться
+            </button>
+          </div>
         </div>
-    );
-}
+      );
+    };      
 
 export default LoginPage;

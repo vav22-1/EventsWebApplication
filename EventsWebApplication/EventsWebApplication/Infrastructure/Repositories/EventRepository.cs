@@ -1,9 +1,7 @@
 ﻿using EventsWebApplication.Core.DTOs;
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
-using EventsWebApplication.Infrasturture.Data;
-using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.EntityFrameworkCore;
+using EventsWebApplication.Infrastructure.Data;
 
 namespace EventsWebApplication.Infrastructure.Repositories
 {
