@@ -1,0 +1,16 @@
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.AssemblyInfo.cs
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.sourcelink.json
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\bin\Debug\net8.0\EventsWebApplication.Infrastructure.deps.json
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\bin\Debug\net8.0\EventsWebApplication.Infrastructure.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\bin\Debug\net8.0\EventsWebApplication.Infrastructure.pdb
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\bin\Debug\net8.0\EventsWebApplication.Core.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\bin\Debug\net8.0\EventsWebApplication.Core.pdb
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.csproj.CopyComplete
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\refint\EventsWebApplication.Infrastructure.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\EventsWebApplication.Infrastructure.pdb
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Infrastructure\obj\Debug\net8.0\ref\EventsWebApplication.Infrastructure.dll

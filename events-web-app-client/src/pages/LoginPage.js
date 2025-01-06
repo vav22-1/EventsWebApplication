@@ -24,28 +24,29 @@ function LoginPage() {
     }, [navigate]);
 
     const handleLogin = async () => {
-        try {
-            const response = await api.post('https://localhost:7178/api/User/login', {
-                username,
-                password,
-            });
-            localStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.refreshToken);
-            localStorage.setItem('participantId', response.data.participantId);
-            localStorage.setItem('role', response.data.role);
-
-            navigate('/events');
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                const serverMessage = error.response.data;
-                setValidationErrors({ general: [serverMessage] });
-            } else if (error.response && error.response.status === 400 && error.response.data.errors) {
-                setValidationErrors(error.response.data.errors);
-            } else {
-                setValidationErrors({ general: ['Ошибка при авторизации. Пожалуйста, попробуйте снова.'] });
-            }
-        }
-    };
+      try {
+          const response = await api.post('https://localhost:7178/api/User/login', {
+              username,
+              password,
+          });
+          localStorage.setItem('accessToken', response.data.accessToken);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
+          localStorage.setItem('participantId', response.data.participantId);
+          localStorage.setItem('role', response.data.role);
+  
+          navigate('/events');
+      } catch (error) {
+          if (error.response && error.response.status === 401) {
+              const serverMessage = error.response.data.message || 'Неверный логин или пароль';
+              setValidationErrors({ general: [serverMessage] });
+          } else if (error.response && error.response.status === 400 && error.response.data.errors) {
+              setValidationErrors(error.response.data.errors);
+          } else {
+              setValidationErrors({ general: ['Ошибка при авторизации. Пожалуйста, попробуйте снова.'] });
+          }
+      }
+  };
+  
 
     return (
         <div className="login-container">

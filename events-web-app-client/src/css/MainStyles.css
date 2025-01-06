@@ -58,6 +58,7 @@
 .eventlist li img {
   width: 100%;
   max-width: 210px;
+  max-height: 130px;
   height: auto;
   border-radius: 8px;
   margin-bottom: 1px;
@@ -427,7 +428,7 @@ label {
   font-size: 2rem;
   color: #333;
   margin-bottom: 15px;
-  text-align: center;
+  text-align: left;
 }
 
 .event-details p {

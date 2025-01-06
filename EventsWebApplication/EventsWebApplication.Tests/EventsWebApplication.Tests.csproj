@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventsWebApplication\EventsWebApplication.csproj" />
+    <ProjectReference Include="..\EventsWebApplication\EventsWebApplication.Api.csproj" />
   </ItemGroup>
 
 </Project>

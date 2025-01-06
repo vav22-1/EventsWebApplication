@@ -69,6 +69,10 @@
       "PackagePath": "staticwebassets\\images\\Capture001_9d73ef95-7eb1-4535-a434-42a754bc5f4a.png"
     },
     {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_a1c1e7f7-6ea8-40c6-a5f7-78b7350e422b.png",
+      "PackagePath": "staticwebassets\\images\\Capture001_a1c1e7f7-6ea8-40c6-a5f7-78b7350e422b.png"
+    },
+    {
       "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\Capture001_b4019c56-a596-43f0-999f-ced59aaa8fbf.png",
       "PackagePath": "staticwebassets\\images\\Capture001_b4019c56-a596-43f0-999f-ced59aaa8fbf.png"
     },
@@ -117,20 +121,32 @@
       "PackagePath": "staticwebassets\\images\\Capture001_f413bbb9-3aee-47ef-8a72-fdd102aec658.png"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EventsWebApplication.Microsoft.AspNetCore.StaticWebAssets.props",
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\diagram_packages_71b81b86-7d1b-4819-9573-24841eb2d3c4.png",
+      "PackagePath": "staticwebassets\\images\\diagram_packages_71b81b86-7d1b-4819-9573-24841eb2d3c4.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\diagram_ui_classes_8611b6b9-8c54-458f-a291-14b738146586.png",
+      "PackagePath": "staticwebassets\\images\\diagram_ui_classes_8611b6b9-8c54-458f-a291-14b738146586.png"
+    },
+    {
+      "Id": "C:\\Users\\nikyu\\Documents\\GitHub\\EventsWebApplication\\EventsWebApplication\\EventsWebApplication\\wwwroot\\images\\diagram_ui_classes_95489a1a-838c-41c1-9d5f-a65d199da8e2.png",
+      "PackagePath": "staticwebassets\\images\\diagram_ui_classes_95489a1a-838c-41c1-9d5f-a65d199da8e2.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EventsWebApplication.API.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.EventsWebApplication.props",
-      "PackagePath": "build\\EventsWebApplication.props"
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.EventsWebApplication.API.props",
+      "PackagePath": "build\\EventsWebApplication.API.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.EventsWebApplication.props",
-      "PackagePath": "buildMultiTargeting\\EventsWebApplication.props"
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.EventsWebApplication.API.props",
+      "PackagePath": "buildMultiTargeting\\EventsWebApplication.API.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.EventsWebApplication.props",
-      "PackagePath": "buildTransitive\\EventsWebApplication.props"
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.EventsWebApplication.API.props",
+      "PackagePath": "buildTransitive\\EventsWebApplication.API.props"
     }
   ],
   "ElementsToRemove": []
