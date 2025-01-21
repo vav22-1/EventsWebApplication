@@ -1,9 +1,6 @@
-﻿using EventsWebApplication.Core.DTOs;
-using EventsWebApplication.Core.DTOs.UserDTOs;
+﻿using EventsWebApplication.Core.DTOs.UserDTOs;
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Interfaces.Services;
-using System;
-using System.Threading.Tasks;
 
 namespace EventsWebApplication.Application.UseCases
 {

@@ -1,5 +1,4 @@
 ﻿using EventsWebApplication.Core.Interfaces.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace EventsWebApplication.Infrastructure.Services

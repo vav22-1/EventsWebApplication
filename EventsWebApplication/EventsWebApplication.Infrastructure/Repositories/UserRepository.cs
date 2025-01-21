@@ -1,7 +1,6 @@
 ﻿using EventsWebApplication.Core.Interfaces.Repositories;
 using EventsWebApplication.Core.Models;
 using EventsWebApplication.Infrastructure.Data;
-using EventsWebApplication.Infrastructure.Services;
 
 namespace EventsWebApplication.Infrastructure.Repositories
 {

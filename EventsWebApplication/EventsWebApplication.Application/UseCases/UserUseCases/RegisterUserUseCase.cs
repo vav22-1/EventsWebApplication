@@ -2,8 +2,6 @@
 using EventsWebApplication.Core.DTOs.UserDTOs;
 using EventsWebApplication.Core.Interfaces.Services;
 using EventsWebApplication.Core.Models;
-using System;
-using System.Threading.Tasks;
 
 namespace EventsWebApplication.Application.UseCases
 {

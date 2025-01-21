@@ -1,7 +1,5 @@
-﻿using EventsWebApplication.Core.DTOs.ParticipantDTOs;
-using EventsWebApplication.Core.DTOs.UserDTOs;
+﻿using EventsWebApplication.Core.DTOs.UserDTOs;
 using EventsWebApplication.Core.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace EventsWebApplication.API.Controllers
 {
