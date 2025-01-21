@@ -1,7 +1,0 @@
-C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_EventsWebApplication.Tests
-C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Tests\obj\Debug\net8.0\EventsWebApplication.Tests.csproj.AssemblyReference.cache
-C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Tests\obj\Debug\net8.0\EventsWebApplication.Tests.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Tests\obj\Debug\net8.0\EventsWebApplication.Tests.AssemblyInfoInputs.cache
-C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Tests\obj\Debug\net8.0\EventsWebApplication.Tests.AssemblyInfo.cs
-C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Tests\obj\Debug\net8.0\EventsWebApplication.Tests.csproj.CoreCompileInputs.cache
-C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication.Tests\obj\Debug\net8.0\EventsWebApplication.Tests.sourcelink.json
