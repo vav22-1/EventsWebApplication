@@ -1,55 +1,87 @@
-﻿using EventsWebApplication.Core.DTOs;
-using EventsWebApplication.Core.Models;
-using EventsWebApplication.Infrastructure.Repositories;
-using EventsWebApplication.Tests;
+﻿using EventsWebApplication.Core.DTOs.EventDTOs;
+using EventsWebApplication.Application.UseCases.EventUseCases;
 using FluentAssertions;
+using Moq;
 using Xunit;
+using AutoMapper;
+using EventsWebApplication.Core.Interfaces;
+using EventsWebApplication.Core.Models;
 
 namespace EventsWebApplication.Tests.UseCases
 {
     public class EventUseCasesTests
     {
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+        private readonly Mock<IMapper> _mockMapper;
+
+        public EventUseCasesTests()
+        {
+            _mockUnitOfWork = new Mock<IUnitOfWork>();
+            _mockMapper = new Mock<IMapper>();
+        }
+
         [Fact]
         public async Task GetAllEvents_ShouldReturnAllEvents()
         {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
+            // Arrange
+            var useCase = new GetAllEventsUseCase(_mockUnitOfWork.Object, _mockMapper.Object);
 
-            var events = await repository.GetAllEventsAsync();
+            var eventEntities = new List<Event>
+            {
+                new Event { Id = 1, Title = "Event 1" },
+                new Event { Id = 2, Title = "Event 2" }
+            };
+            _mockUnitOfWork.Setup(uow => uow.Events.GetAllAsync()).ReturnsAsync(eventEntities);
 
-            events.Should().NotBeNull();
-            events.Should().HaveCount(2);
+            var eventResponseDtos = new List<EventResponseDto>
+            {
+                new EventResponseDto { Id = "1", Title = "Event 1" },
+                new EventResponseDto { Id = "2", Title = "Event 2" }
+            };
+            _mockMapper.Setup(mapper => mapper.Map<IEnumerable<EventResponseDto>>(eventEntities)).Returns(eventResponseDtos);
+
+            // Act
+            var result = await useCase.ExecuteAsync(null);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(2);
+            result.First().Title.Should().Be("Event 1");
         }
 
         [Fact]
         public async Task GetEventById_ShouldReturnCorrectEvent()
         {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
+            // Arrange
+            var useCase = new GetEventByIdUseCase(_mockUnitOfWork.Object, _mockMapper.Object);
+            var eventEntity = new Event { Id = 1, Title = "Event 1" };
+            _mockUnitOfWork.Setup(uow => uow.Events.GetEventByIdAsync(1)).ReturnsAsync(eventEntity);
+            var eventResponseDto = new EventResponseDto { Id = "1", Title = "Event 1" };
+            _mockMapper.Setup(mapper => mapper.Map<EventResponseDto>(eventEntity)).Returns(eventResponseDto);
 
-            var eventEntity = await repository.GetEventByIdAsync(1);
+            var dto = new GetEventByIdDto { Id = 1 };
 
-            eventEntity.Should().NotBeNull();
-            eventEntity.Title.Should().Be("Event 1");
-        }
+            // Act
+            var result = await useCase.ExecuteAsync(dto);
 
-        [Fact]
-        public async Task GetEventByTitle_ShouldReturnCorrectEvent()
-        {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
-
-            var eventEntity = await repository.GetEventByTitleAsync("Event 2");
-
-            eventEntity.Should().NotBeNull();
-            eventEntity.Category.Should().Be("Спорт");
+            // Assert
+            result.Should().NotBeNull();
+            result.Title.Should().Be("Event 1");
         }
 
         [Fact]
         public async Task AddEvent_ShouldAddNewEvent()
         {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
+            // Arrange
+            var useCase = new AddEventUseCase(_mockUnitOfWork.Object, _mockMapper.Object);
+            var eventRequestDto = new EventRequestDto
+            {
+                Title = "New Event",
+                Category = "Технологии",
+                Location = "Полоцк",
+                DateAndTime = DateTime.Now.AddMonths(1),
+                MaxParticipants = 200
+            };
 
             var newEvent = new Event
             {
@@ -60,18 +92,39 @@ namespace EventsWebApplication.Tests.UseCases
                 MaxParticipants = 200
             };
 
-            await repository.AddEventAsync(newEvent);
+            var eventResponseDto = new EventResponseDto
+            {
+                Id = "1",
+                Title = "New Event",
+                Category = "Технологии",
+                Location = "Полоцк",
+                DateAndTime = DateTime.Now.AddMonths(1),
+                MaxParticipants = 200
+            };
 
-            dbContext.Events.Should().HaveCount(3);
+            _mockMapper.Setup(mapper => mapper.Map<Event>(eventRequestDto)).Returns(newEvent);
+            _mockMapper.Setup(mapper => mapper.Map<EventResponseDto>(newEvent)).Returns(eventResponseDto);
+            _mockUnitOfWork.Setup(uow => uow.Events.AddAsync(newEvent)).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await useCase.ExecuteAsync(eventRequestDto);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Title.Should().Be("New Event");
+            result.Category.Should().Be("Технологии");
+            result.Location.Should().Be("Полоцк");
+
+            _mockUnitOfWork.Verify(uow => uow.Events.AddAsync(newEvent), Times.Once);
         }
+
 
         [Fact]
         public async Task UpdateEvent_ShouldUpdateExistingEvent()
         {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
-
-            var initialEvent = new Event
+            // Arrange
+            var useCase = new UpdateEventUseCase(_mockUnitOfWork.Object, _mockMapper.Object);
+            var eventToUpdate = new Event
             {
                 Id = 3,
                 Title = "Event 3",
@@ -80,98 +133,104 @@ namespace EventsWebApplication.Tests.UseCases
                 DateAndTime = DateTime.Now,
                 MaxParticipants = 100
             };
-            await repository.AddEventAsync(initialEvent);
 
-            var eventToUpdate = await repository.GetEventByIdAsync(3);
-            eventToUpdate.Title = "Updated Event 3";
-            eventToUpdate.Category = "Музыка";
-            eventToUpdate.Location = "Витебск";
-            eventToUpdate.DateAndTime = DateTime.Now.AddMonths(1);
-            eventToUpdate.MaxParticipants = 120;
+            var updateRequest = new EventUpdateRequestDto
+            {
+                Id = 3,
+                UpdatedEventDto = new EventRequestDto
+                {
+                    Title = "Updated Event 3",
+                    Category = "Музыка",
+                    Location = "Витебск",
+                    DateAndTime = DateTime.Now.AddMonths(1),
+                    MaxParticipants = 120
+                },
+            };
+            var participants = new List<Participant>
+            {
+                 new Participant { Id = 1, FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" }
+            };
 
-            await repository.UpdateEventAsync(eventToUpdate);
+            _mockUnitOfWork.Setup(uow => uow.Events.GetEventByIdAsync(3)).ReturnsAsync(eventToUpdate);
+            _mockMapper.Setup(mapper => mapper.Map(updateRequest.UpdatedEventDto, eventToUpdate)).Returns(eventToUpdate);
+            _mockUnitOfWork.Setup(uow => uow.Events.Update(eventToUpdate));
 
-            var eventEntity = await repository.GetEventByIdAsync(3);
-            eventEntity.Should().NotBeNull();
-            eventEntity.Title.Should().Be("Updated Event 3");
-            eventEntity.Category.Should().Be("Музыка");
-            eventEntity.Location.Should().Be("Витебск");
-            eventEntity.MaxParticipants.Should().Be(120);
+            _mockUnitOfWork.Setup(uow => uow.Participants.GetParticipantsByEventIdAsync(3)).ReturnsAsync(participants);
+            _mockUnitOfWork.Setup(uow => uow.Notifications.NotifyParticipantsAboutEventChange(participants, It.IsAny<string>())).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await useCase.ExecuteAsync(updateRequest);
+
+            // Assert
+            result.Should().Be("Событие обновлено успешно.");
+
+            _mockUnitOfWork.Verify(uow => uow.Notifications.NotifyParticipantsAboutEventChange(participants, It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
         public async Task DeleteEvent_ShouldDeleteEvent()
         {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
+            // Arrange
+            var useCase = new DeleteEventUseCase(_mockUnitOfWork.Object);
+            var deleteDto = new DeleteEventDto { Id = 1 };
+            var eventToDelete = new Event { Id = 1, Title = "Event 1" };
 
-            await repository.DeleteEventAsync(1);
+            _mockUnitOfWork.Setup(uow => uow.Events.GetEventByIdAsync(1)).ReturnsAsync(eventToDelete);
+            _mockUnitOfWork.Setup(uow => uow.Events.Delete(eventToDelete));
 
-            var deletedEvent = await dbContext.Events.FindAsync(1);
-            deletedEvent.Should().BeNull();
-        }
+            // Act
+            var result = await useCase.ExecuteAsync(deleteDto);
 
-        [Fact]
-        public void GetEventsWithFilterQuery_ShouldFilterEventsByCategory()
-        {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
-
-            var filter = new EventFilterDto { FilterCategory = "Музыка" };
-
-            var filteredEvents = repository.GetEventsWithFilterQuery(filter).ToList();
-
-            filteredEvents.Should().HaveCount(1);
-            filteredEvents[0].Category.Should().Be("Музыка");
-        }
-
-        [Fact]
-        public async Task GetCurrentParticipants_ShouldReturnCurrentParticipants()
-        {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
-
-            var testParticipant = new Participant
-            {
-                Id = 1,
-                FirstName = "Никита",
-                LastName = "Юркевич",
-                Email = "nik.yurkevich@example.com",
-                DateOfRegistration = DateTime.Now
-            };
-            dbContext.Participants.Add(testParticipant);
-
-            dbContext.EventParticipants.Add(new EventParticipant { EventId = 1, ParticipantId = 1 });
-            await dbContext.SaveChangesAsync();
-
-            var participantsCount = await repository.GetCurrentParticipantsAsync(1);
-
-            participantsCount.Should().Be(1);
+            // Assert
+            result.Should().Be("Событие удалено.");
         }
 
         [Fact]
         public async Task GetAvailableSeats_ShouldReturnCorrectAvailableSeats()
         {
-            var dbContext = TestDbContextHelper.GetInMemoryDbContext();
-            var repository = new EventRepository(dbContext);
+            // Arrange
+            var useCase = new GetAvailableSeatsUseCase(_mockUnitOfWork.Object);
+            var eventEntity = new Event { Id = 1, MaxParticipants = 100 };
+            _mockUnitOfWork.Setup(uow => uow.Events.GetEventByIdAsync(1)).ReturnsAsync(eventEntity);
+            _mockUnitOfWork.Setup(uow => uow.Events.GetCurrentParticipantsAsync(1)).ReturnsAsync(50);
 
-            var testParticipant = new Participant
+            var dto = new GetEventByIdDto { Id = 1 };
+
+            // Act
+            var result = await useCase.ExecuteAsync(dto);
+
+            // Assert
+            result.Should().Be(50);
+        }
+
+        [Fact]
+        public void GetEventsWithFilterQuery_ShouldFilterEventsByCategory()
+        {
+            // Arrange
+            var useCase = new GetPaginatedEventsUseCase(_mockUnitOfWork.Object, _mockMapper.Object);
+            var eventFilter = new EventFilterDto { FilterCategory = "Музыка" };
+            var filter = new PaginatedEventRequestDto { Filter = eventFilter, Page = 1, PageSize = 8 };
+
+            var events = new List<Event>
             {
-                Id = 1,
-                FirstName = "Никита",
-                LastName = "Юркевич",
-                Email = "nik.yurkevich@example.com",
-                DateOfRegistration = DateTime.Now
+                new Event { Category = "Музыка", Title = "Music Event 1" },
+                new Event { Category = "Технологии", Title = "Tech Event 1" }
             };
-            dbContext.Participants.Add(testParticipant);
 
-            dbContext.EventParticipants.Add(new EventParticipant { EventId = 1, ParticipantId = 1 });
+            var eventResponseDtos = new List<EventResponseDto>
+            {
+                new EventResponseDto { Category = "Музыка", Title = "Music Event 1" }
+            };
 
-            await dbContext.SaveChangesAsync();
+            _mockUnitOfWork.Setup(uow => uow.Events.GetPaginatedEventsAsync(eventFilter, 1, 8)).ReturnsAsync((events, 1));
+            _mockMapper.Setup(mapper => mapper.Map<IEnumerable<EventResponseDto>>(events)).Returns(eventResponseDtos);
 
-            var availableSeats = await repository.GetAvailableSeatsAsync(1);
+            // Act
+            var result = useCase.ExecuteAsync(filter).Result;
 
-            availableSeats.Should().Be(99);
+            // Assert
+            result.Items.Should().HaveCount(1);
+            result.Items.First().Category.Should().Be("Музыка");
         }
     }
 }

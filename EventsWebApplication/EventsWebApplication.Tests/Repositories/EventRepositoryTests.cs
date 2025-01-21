@@ -1,6 +1,7 @@
 ﻿using EventsWebApplication.Core.Models;
 using EventsWebApplication.Infrastructure.Repositories;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventsWebApplication.Tests.Repositories
 {
@@ -12,7 +13,7 @@ namespace EventsWebApplication.Tests.Repositories
             var dbContext = TestDbContextHelper.GetInMemoryDbContext();
             var repository = new EventRepository(dbContext);
 
-            var events = await repository.GetAllEventsAsync();
+            var events = await repository.GetAllAsync();
 
             events.Should().HaveCount(2);
         }
@@ -32,7 +33,8 @@ namespace EventsWebApplication.Tests.Repositories
                 MaxParticipants = 200
             };
 
-            await repository.AddEventAsync(newEvent);
+            await repository.AddAsync(newEvent);
+            await dbContext.SaveChangesAsync();
 
             dbContext.Events.Should().HaveCount(3);
         }
