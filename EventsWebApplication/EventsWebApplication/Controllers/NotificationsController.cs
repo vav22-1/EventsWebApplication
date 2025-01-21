@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs;
+﻿using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
 

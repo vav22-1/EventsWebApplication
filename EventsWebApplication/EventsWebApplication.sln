@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventsWebApplication.Api", "EventsWebApplication\EventsWebApplication.Api.csproj", "{B87B398B-8288-4FD8-AD3D-9E17836E2548}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventsWebApplication.API", "EventsWebApplication\EventsWebApplication.API.csproj", "{B87B398B-8288-4FD8-AD3D-9E17836E2548}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0CC42A82-F0D6-4E95-B6AB-0AFB95B2DC4F} = {0CC42A82-F0D6-4E95-B6AB-0AFB95B2DC4F}
 		{8F5F19F5-29C4-421D-A43C-FA417A54221D} = {8F5F19F5-29C4-421D-A43C-FA417A54221D}
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventsWebApplication.Core",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventsWebApplication.Infrastructure", "EventsWebApplication.Infrastructure\EventsWebApplication.Infrastructure.csproj", "{0CC42A82-F0D6-4E95-B6AB-0AFB95B2DC4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsWebApplication.Application", "EventsWebApplication.Application\EventsWebApplication.Application.csproj", "{06ED8E10-F003-4909-96A0-038F56299DC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventsWebApplication.Application", "EventsWebApplication.Application\EventsWebApplication.Application.csproj", "{06ED8E10-F003-4909-96A0-038F56299DC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

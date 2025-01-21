@@ -1,5 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs;
-using EventsWebApplication.Core.Interfaces;
+﻿using EventsWebApplication.Application.DTOs;
 using EventsWebApplication.Core.Models;
 
 namespace EventsWebApplication.Application.UseCases

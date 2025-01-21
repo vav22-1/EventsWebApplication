@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using EventsWebApplication.Core.DTOs.EventDTOs;
-using EventsWebApplication.Core.Interfaces;
+﻿using EventsWebApplication.Application.DTOs.EventDTOs;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases
 {

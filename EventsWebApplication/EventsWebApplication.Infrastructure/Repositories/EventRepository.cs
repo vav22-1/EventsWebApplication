@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs.EventDTOs;
+﻿using EventsWebApplication.Application.DTOs.EventDTOs;
 using EventsWebApplication.Core.Interfaces.Repositories;
 using EventsWebApplication.Core.Models;
 using EventsWebApplication.Infrastructure.Data;
@@ -10,7 +10,7 @@ namespace EventsWebApplication.Infrastructure.Repositories
     {
         public EventRepository(EventAppDbContext dbContext) : base(dbContext) { }
 
-        private static Expression<Func<Event, bool>> BuildEventFilter(EventFilterDto? filter)
+        private static Expression<Func<Event, bool>> BuildEventFilter(EventFilter? filter)
         {
             return e =>
                 (string.IsNullOrWhiteSpace(filter.Title) || e.Title.StartsWith(filter.Title)) &&
@@ -35,7 +35,7 @@ namespace EventsWebApplication.Infrastructure.Repositories
                 .FirstOrDefaultAsync(e => e.Title == title);
         }
 
-        public async Task<(IEnumerable<Event>, int totalCount)> GetPaginatedEventsAsync(EventFilterDto? filter, int page, int pageSize)
+        public async Task<(IEnumerable<Event>, int totalCount)> GetPaginatedEventsAsync(EventFilter? filter, int page, int pageSize)
         {
             var filterExpression = BuildEventFilter(filter);
             var query = _dbContext.Events.Where(filterExpression);
@@ -49,7 +49,7 @@ namespace EventsWebApplication.Infrastructure.Repositories
             return (items, totalCount);
         }
 
-        public async Task<(IEnumerable<Event>, int totalCount)> GetEventsByParticipantIdWithFilterAsync(int participantId, EventFilterDto? filter, int page, int pageSize)
+        public async Task<(IEnumerable<Event>, int totalCount)> GetEventsByParticipantIdWithFilterAsync(int participantId, EventFilter? filter, int page, int pageSize)
         {
             var filterExpression = BuildEventFilter(filter);
             var query = _dbContext.EventParticipants

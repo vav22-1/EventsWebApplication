@@ -1,5 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs.ParticipantDTOs;
-using EventsWebApplication.Core.Interfaces;
+﻿using EventsWebApplication.Application.DTOs.ParticipantDTOs;
 
 namespace EventsWebApplication.Application.UseCases.ParticipantUseCases
 {

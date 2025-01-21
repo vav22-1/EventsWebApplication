@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs.UserDTOs;
+﻿using EventsWebApplication.Application.DTOs.UserDTOs;
 using EventsWebApplication.Core.Interfaces;
 
 namespace EventsWebApplication.API.Controllers

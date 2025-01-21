@@ -1,9 +1,6 @@
 ﻿using EventsWebApplication.Application.UseCases.EventUseCases;
-using EventsWebApplication.Core.DTOs.EventDTOs;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
-using System.IO;
+using EventsWebApplication.Application.DTOs.EventDTOs;
+using EventsWebApplication.Core.Models;
 
 namespace EventsWebApplication.API.Controllers
 {
@@ -122,7 +119,7 @@ namespace EventsWebApplication.API.Controllers
 
         [HttpGet("filter")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<IActionResult> GetEventsByFilter([FromQuery] EventFilterDto filter, int page = 1, int pageSize = 8)
+        public async Task<IActionResult> GetEventsByFilter([FromQuery] EventFilter filter, int page = 1, int pageSize = 8)
         {
             var paginatedResult = await _getPaginatedEventsUseCase.ExecuteAsync(new PaginatedEventRequestDto { Filter = filter, Page = page, PageSize = pageSize});
             return Ok(paginatedResult);
@@ -130,7 +127,7 @@ namespace EventsWebApplication.API.Controllers
 
         [HttpGet("{participantId}/events")]
         [Authorize(Policy = "UserPolicy")]
-        public async Task<IActionResult> GetEventsByParticipantWithFilter(int participantId, [FromQuery] EventFilterDto filter, int page = 1, int pageSize = 8)
+        public async Task<IActionResult> GetEventsByParticipantWithFilter(int participantId, [FromQuery] EventFilter filter, int page = 1, int pageSize = 8)
         {
             var paginatedResult = await _getEventsByParticipantWithFilterUseCase.ExecuteAsync(new GetParticipantEventsRequestDto { ParticipantId = participantId, FilterAndPagination = new PaginatedEventRequestDto { Filter = filter, Page = page, PageSize = pageSize } });
             return Ok(paginatedResult);

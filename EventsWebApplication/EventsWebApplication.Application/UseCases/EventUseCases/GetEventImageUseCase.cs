@@ -1,6 +1,5 @@
-﻿using EventsWebApplication.Core.DTOs.EventDTOs;
+﻿using EventsWebApplication.Application.DTOs.EventDTOs;
 using EventsWebApplication.Core.Interfaces.Services;
-using EventsWebApplication.Core.Interfaces;
 
 namespace EventsWebApplication.Application.UseCases.EventUseCases
 {

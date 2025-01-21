@@ -1,8 +1,7 @@
-﻿using EventsWebApplication.Core.DTOs.EventDTOs;
+﻿using EventsWebApplication.Application.DTOs.EventDTOs;
 using EventsWebApplication.Application.UseCases.EventUseCases;
 using FluentAssertions;
 using Moq;
-using Xunit;
 using AutoMapper;
 using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Models;
@@ -208,7 +207,7 @@ namespace EventsWebApplication.Tests.UseCases
         {
             // Arrange
             var useCase = new GetPaginatedEventsUseCase(_mockUnitOfWork.Object, _mockMapper.Object);
-            var eventFilter = new EventFilterDto { FilterCategory = "Музыка" };
+            var eventFilter = new EventFilter { FilterCategory = "Музыка" };
             var filter = new PaginatedEventRequestDto { Filter = eventFilter, Page = 1, PageSize = 8 };
 
             var events = new List<Event>

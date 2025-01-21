@@ -1,5 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs.UserDTOs;
-using EventsWebApplication.Core.Interfaces;
+﻿using EventsWebApplication.Application.DTOs.UserDTOs;
 using EventsWebApplication.Core.Interfaces.Services;
 
 namespace EventsWebApplication.Application.UseCases
@@ -25,8 +24,11 @@ namespace EventsWebApplication.Application.UseCases
 
             var newAccessToken = _tokenService.GenerateJwtAccessToken(user);
 
-            user.RefreshToken = Guid.NewGuid().ToString();
-            user.RefreshTokenExpiry = DateTime.UtcNow.AddHours(12);
+            if (user.RefreshTokenExpiry < DateTime.UtcNow)
+            {
+                user.RefreshToken = Guid.NewGuid().ToString();
+                user.RefreshTokenExpiry = DateTime.UtcNow.AddHours(24);
+            }
 
             _unitOfWork.Users.Update(user);
             await _unitOfWork.CompleteAsync();
