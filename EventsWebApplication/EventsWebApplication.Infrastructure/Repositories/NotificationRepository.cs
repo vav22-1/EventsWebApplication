@@ -18,19 +18,14 @@ namespace EventsWebApplication.Infrastructure.Repositories
 
         public async Task NotifyParticipantsAboutEventChange(IEnumerable<Participant> participants, string message)
         {
-
-            foreach (var participant in participants)
+            var notifications = participants.Select(participant => new Notification
             {
-                var notification = new Notification
-                {
-                    ParticipantId = participant.Id,
-                    Message = message,
-                    CreatedAt = DateTime.Now
-                };
+                ParticipantId = participant.Id,
+                Message = message,
+                CreatedAt = DateTime.Now
+            }).ToList();
 
-                await _dbContext.Notifications.AddAsync(notification);
-            }
+            await _dbContext.Notifications.AddRangeAsync(notifications);
         }
-
     }
 }

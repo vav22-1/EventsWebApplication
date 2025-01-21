@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/axiosConfig";
 import { useNavigate } from 'react-router-dom';
-import ConfirmationModal from "../components/ConfirmationModal"
+import ConfirmationModal from "../components/ConfirmationModal";
 import Menu from '../components/Menu';
 import Toast from '../components/Toast';
 import "../css/MainStyles.css";
@@ -18,6 +18,7 @@ const EventsList = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const [page, setPage] = useState(1);
   const [pageSize] = useState(8);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
   const [debounceTimer, setDebounceTimer] = useState(null);
@@ -66,6 +67,7 @@ const EventsList = () => {
           })
         );
         setEvents(eventsWithData);
+        setTotalPages(response.data.totalPages);
       } catch (error) {
         setToastMessage("Ошибка при загрузке данных.");
         console.error("Error during request:", error);
@@ -105,7 +107,8 @@ const EventsList = () => {
         ...prevFilter,
         [name]: value
       }));
-    }, 1);
+      setPage(1);
+    }, 300);
 
     setDebounceTimer(timer);
   };
@@ -142,12 +145,13 @@ const EventsList = () => {
           >
             Назад
           </button>
-          <span>Страница {page}</span>
-          {events.length === pageSize && (
-            <button onClick={() => setPage((prevPage) => prevPage + 1)}>
-              Вперед
-            </button>
-          )}
+          <span>Страница {page} из {totalPages}</span>
+          <button
+            onClick={() => setPage((prevPage) => prevPage + 1)}
+            disabled={page >= totalPages}
+          >
+            Вперед
+          </button>
         </div>
   
         <div>
@@ -194,8 +198,10 @@ const EventsList = () => {
                   )}
                   <p>{event.title}</p>
                   <p>{new Date(event.dateAndTime).toLocaleDateString()}</p>
+                  {console.log(registeredEventIds)}
+                  {console.log(event.id)}
   
-                  {registeredEventIds.includes(event.id) ? (
+                  {registeredEventIds.map(Number).includes(Number(event.id)) ? (
                     <p>Вы уже зарегистрированы на это событие.</p>
                   ) : event.availableSeats <= 0 ? (
                     <p>Свободных мест не осталось</p>
@@ -232,4 +238,3 @@ const EventsList = () => {
 };
   
 export default EventsList;
-

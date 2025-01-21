@@ -1,7 +1,7 @@
 ﻿//Профили маппера разбиты на разные файлы
 
 using EventsWebApplication.Core.Models;
-using EventsWebApplication.Core.DTOs;
+using EventsWebApplication.Core.DTOs.ParticipantDTOs;
 
 namespace EventsWebApplication.Infrastructure.MappingProfiles
 {

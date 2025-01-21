@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs;
+﻿using EventsWebApplication.Core.DTOs.UserDTOs;
 namespace EventsWebApplication.Core.Validators
 {
     public class UserLoginValidator : AbstractValidator<UserLoginDto>

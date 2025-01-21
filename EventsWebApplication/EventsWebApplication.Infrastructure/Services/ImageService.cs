@@ -1,33 +1,46 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EventsWebApplication.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace EventsWebApplication.Infrastructure.Services
 {
-    public class ImageService
+    public class ImageService : IImageService
     {
         private string _imagePath;
         public ImageService(IConfiguration configuration)
         {
             _imagePath = configuration.GetValue<string>("ImageSavePath");
         }
-        public async Task<string> SaveImageAsync(IFormFile image)
+
+        public async Task<string> SaveImageAsync(byte[] imageData)
         {
-            if (image == null)
+            if (imageData == null || imageData.Length == 0)
             {
                 return null;
             }
-            var fileName = Path.GetFileNameWithoutExtension(image.FileName) + "_" + Guid.NewGuid() + Path.GetExtension(image.FileName);
+
+            var fileName = Guid.NewGuid().ToString() + ".jpg";
             var filePath = Path.Combine(_imagePath, fileName);
 
-            using (var imageStream = new FileStream(filePath, FileMode.Create))
-            {
-                await image.CopyToAsync(imageStream);
-            }
+            await File.WriteAllBytesAsync(filePath, imageData);
+
             return fileName;
         }
+
         public string GetImagePath(string fileName)
         {
             return Path.Combine(_imagePath, fileName);
+        }
+
+        public byte[] ReadImage(string fileName)
+        {
+            var filePath = GetImagePath(fileName);
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("Файл изображения не найден", fileName);
+            }
+
+            return File.ReadAllBytes(filePath);
         }
     }
 }

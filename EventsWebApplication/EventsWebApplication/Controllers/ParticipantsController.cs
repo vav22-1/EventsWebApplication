@@ -1,5 +1,5 @@
-﻿using EventsWebApplication.Core.DTOs;
-using EventsWebApplication.Core.Interfaces.UseCases;
+﻿using EventsWebApplication.Core.DTOs.ParticipantDTOs;
+using EventsWebApplication.Core.Interfaces;
 
 namespace EventsWebApplication.API.Controllers
 {
@@ -7,18 +7,32 @@ namespace EventsWebApplication.API.Controllers
     [ApiController]
     public class ParticipantsController : ControllerBase
     {
-        private readonly IParticipantUseCase _participantUseCase;
+        private readonly IUseCase<GetParticipantsByEventIdRequestDto, IEnumerable<ParticipantResponseDto>> _getParticipantsByEventIdUseCase;
+        private readonly IUseCase<GetParticipantByIdRequestDto, ParticipantResponseDto> _getParticipantByIdUseCase;
+        private readonly IUseCase<RegisterParticipantRequestDto, Unit> _registerParticipantUseCase;
+        private readonly IUseCase<UpdateParticipantRequestDto, Unit> _updateParticipantUseCase;
+        private readonly IUseCase<DeleteParticipantFromEventRequestDto, Unit> _deleteParticipantFromEventUseCase;
 
-        public ParticipantsController(IParticipantUseCase participantUseCase)
+        public ParticipantsController(
+            IUseCase<GetParticipantsByEventIdRequestDto, IEnumerable<ParticipantResponseDto>> getParticipantsByEventIdUseCase,
+            IUseCase<GetParticipantByIdRequestDto, ParticipantResponseDto> getParticipantByIdUseCase,
+            IUseCase<RegisterParticipantRequestDto, Unit> registerParticipantUseCase,
+            IUseCase<UpdateParticipantRequestDto, Unit> updateParticipantUseCase,
+            IUseCase<DeleteParticipantFromEventRequestDto, Unit> deleteParticipantFromEventUseCase)
         {
-            _participantUseCase = participantUseCase;
+            _getParticipantsByEventIdUseCase = getParticipantsByEventIdUseCase;
+            _getParticipantByIdUseCase = getParticipantByIdUseCase;
+            _registerParticipantUseCase = registerParticipantUseCase;
+            _updateParticipantUseCase = updateParticipantUseCase;
+            _deleteParticipantFromEventUseCase = deleteParticipantFromEventUseCase;
         }
 
         [HttpGet("event/{eventId}")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<IEnumerable<ParticipantResponseDto>>> GetParticipantsByEventId(int eventId)
         {
-            var participantDtos = await _participantUseCase.GetParticipantsByEventIdAsync(eventId);
+            var requestDto = new GetParticipantsByEventIdRequestDto { EventId = eventId };
+            var participantDtos = await _getParticipantsByEventIdUseCase.ExecuteAsync(requestDto);
             return Ok(participantDtos);
         }
 
@@ -26,7 +40,8 @@ namespace EventsWebApplication.API.Controllers
         [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> GetParticipantById(int id)
         {
-            var participantDto = await _participantUseCase.GetParticipantByIdAsync(id, User);
+            var requestDto = new GetParticipantByIdRequestDto { Id = id, User = User };
+            var participantDto = await _getParticipantByIdUseCase.ExecuteAsync(requestDto);
             return Ok(participantDto);
         }
 
@@ -34,7 +49,8 @@ namespace EventsWebApplication.API.Controllers
         [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult> RegisterParticipant(int eventId)
         {
-            await _participantUseCase.RegisterParticipantAsync(eventId, User);
+            var requestDto = new RegisterParticipantRequestDto { EventId = eventId, User = User };
+            await _registerParticipantUseCase.ExecuteAsync(requestDto);
             return NoContent();
         }
 
@@ -42,7 +58,8 @@ namespace EventsWebApplication.API.Controllers
         [Authorize(Policy = "UserPolicy")]
         public async Task<IActionResult> UpdateParticipant(int id, [FromBody] ParticipantRequestDto participantDto)
         {
-            await _participantUseCase.UpdateParticipantAsync(id, participantDto, User);
+            var requestDto = new UpdateParticipantRequestDto { Id = id, ParticipantDto = participantDto, User = User };
+            await _updateParticipantUseCase.ExecuteAsync(requestDto);
             return NoContent();
         }
 
@@ -50,7 +67,8 @@ namespace EventsWebApplication.API.Controllers
         [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult> DeleteParticipantFromEvent(int eventId, int id)
         {
-            await _participantUseCase.DeleteParticipantFromEventAsync(eventId, id, User);
+            var requestDto = new DeleteParticipantFromEventRequestDto { EventId = eventId, ParticipantId = id, User = User };
+            await _deleteParticipantFromEventUseCase.ExecuteAsync(requestDto);
             return NoContent();
         }
     }

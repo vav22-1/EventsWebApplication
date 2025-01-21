@@ -1,20 +1,24 @@
 ﻿using EventsWebApplication.Core.Interfaces;
 using EventsWebApplication.Core.Interfaces.Repositories;
-using EventsWebApplication.Core.Interfaces.Services;
-using EventsWebApplication.Core.Interfaces.UseCases;
 using EventsWebApplication.Core.Validators;
 using EventsWebApplication.Infrastructure;
 using EventsWebApplication.Infrastructure.Data;
 using EventsWebApplication.Infrastructure.MappingProfiles;
 using EventsWebApplication.Infrastructure.Repositories;
 using EventsWebApplication.Infrastructure.Services;
-using EventsWebApplication.Infrastructure.UseCases;
+using EventsWebApplication.Application.UseCases;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
+using EventsWebApplication.Core.Interfaces.Services;
+using EventsWebApplication.Core.DTOs;
+using EventsWebApplication.Core.Models;
+using EventsWebApplication.Core.DTOs.ParticipantDTOs;
+using EventsWebApplication.Application.UseCases.ParticipantUseCases;
+using EventsWebApplication.Application;
 
 namespace EventsWebApplication.API.Extensions
 {
@@ -28,18 +32,15 @@ namespace EventsWebApplication.API.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IEventRepository, EventRepository>();
-            services.AddScoped<IPartisipantRepository, ParticipantRepository>();
+            services.AddScoped<IParticipantRepository, ParticipantRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
 
-            services.AddScoped<IEventUseCase, EventUseCase>();
-            services.AddScoped<IParticipantUseCase, ParticipantUseCase>();
-            services.AddScoped<IUserUseCase, UserUseCase>();
-            services.AddScoped<INotificationUseCase, NotificationUseCase>();
+            services.AddUseCases();
 
-            services.AddScoped<ImageService>();
-            services.AddScoped<EventService>();
+            services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IPasswordService, PasswordService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddAutoMapper(typeof(EventMappingProfile).Assembly);
 

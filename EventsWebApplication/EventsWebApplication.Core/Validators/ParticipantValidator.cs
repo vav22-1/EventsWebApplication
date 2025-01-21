@@ -1,4 +1,4 @@
-﻿using EventsWebApplication.Core.DTOs;
+﻿using EventsWebApplication.Core.DTOs.ParticipantDTOs;
 
 namespace EventsWebApplication.Core.Validators
 {

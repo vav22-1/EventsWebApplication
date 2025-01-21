@@ -1,5 +1,7 @@
-﻿using EventsWebApplication.Core.DTOs;
-using EventsWebApplication.Core.Interfaces.UseCases;
+﻿using EventsWebApplication.Core.DTOs.ParticipantDTOs;
+using EventsWebApplication.Core.DTOs.UserDTOs;
+using EventsWebApplication.Core.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace EventsWebApplication.API.Controllers
 {
@@ -7,31 +9,39 @@ namespace EventsWebApplication.API.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserUseCase _userUseCase;
+        private readonly IUseCase<UserRegisterDto, string> _registerUserUseCase;
+        private readonly IUseCase<UserLoginDto, object> _loginUserUseCase;
+        private readonly IUseCase<RefreshTokenRequestDto, object> _refreshTokenUseCase;
 
-        public UserController(IUserUseCase userUseCase)
+        public UserController(
+            IUseCase<UserRegisterDto, string> registerUserUseCase,
+            IUseCase<UserLoginDto, object> loginUserUseCase,
+            IUseCase<RefreshTokenRequestDto, object> refreshTokenUseCase)
         {
-            _userUseCase = userUseCase;
+            _registerUserUseCase = registerUserUseCase;
+            _loginUserUseCase = loginUserUseCase;
+            _refreshTokenUseCase = refreshTokenUseCase;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserRegisterDto userDto)
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto userDto)
         {
-            var result = await _userUseCase.RegisterUserAsync(userDto);
+            var result = await _registerUserUseCase.ExecuteAsync(userDto);
             return Ok(result);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserLoginDto userDto)
+        public async Task<IActionResult> Login([FromBody] UserLoginDto userDto)
         {
-            var result = await _userUseCase.LoginUserAsync(userDto);
+            var result = await _loginUserUseCase.ExecuteAsync(userDto);
             return Ok(result);
         }
 
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
         {
-            var result = await _userUseCase.RefreshTokenAsync(refreshToken);
+            var refreshDto = new RefreshTokenRequestDto { RefreshToken = refreshToken };
+            var result = await _refreshTokenUseCase.ExecuteAsync(refreshDto);
             return Ok(result);
         }
     }

@@ -8,7 +8,7 @@ namespace EventsWebApplication.Infrastructure
     {
         private readonly EventAppDbContext _dbContext;
         public IEventRepository Events { get; }
-        public IPartisipantRepository Participants { get; }
+        public IParticipantRepository Participants { get; }
         public IUserRepository Users { get; }
         public INotificationRepository Notifications { get; }
 
@@ -16,7 +16,7 @@ namespace EventsWebApplication.Infrastructure
 
         public UnitOfWork(EventAppDbContext dbContext,
                           IEventRepository eventRepository,
-                          IPartisipantRepository participantRepository,
+                          IParticipantRepository participantRepository,
                           IUserRepository userRepository,
                           INotificationRepository notificationRepository)
         {

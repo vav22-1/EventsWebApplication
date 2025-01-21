@@ -4,10 +4,9 @@ using EventsWebApplication.Infrastructure.Data;
 
 namespace EventsWebApplication.Infrastructure.Repositories
 {
-    public class ParticipantRepository : Repository<Participant>, IPartisipantRepository
+    public class ParticipantRepository : Repository<Participant>, IParticipantRepository
     {
         public ParticipantRepository(EventAppDbContext dbContext) : base(dbContext) { }
-
 
         public async Task<Participant> GetParticipantByIdAsync(int id)
         {
@@ -28,14 +27,13 @@ namespace EventsWebApplication.Infrastructure.Repositories
 
         public async Task AddParticipantToEventAsync(int eventId, int participantId)
         {
-            var eventParticipant = new EventParticipant
+            await _dbContext.EventParticipants.AddAsync(new EventParticipant
             {
                 EventId = eventId,
                 ParticipantId = participantId
-            };
-
-            await _dbContext.EventParticipants.AddAsync(eventParticipant);
+            });
         }
+
         public async Task RemoveParticipantFromEventAsync(int eventId, int participantId)
         {
             var eventParticipant = await _dbContext.EventParticipants

@@ -442,6 +442,21 @@ label {
   font-weight: bold;
 }
 
+.event-details button {
+  padding: 10px 20px;
+  background-color: #71c737;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.event-details button:hover {
+  background-color: #60ac2d;
+}
+
 .event-details .event-info {
   background-color: #fff;
   padding: 20px;

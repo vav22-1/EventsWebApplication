@@ -177,3 +177,5 @@ C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\Events
 C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\obj\Debug\net8.0\EventsWebApplication.API.pdb
 C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\obj\Debug\net8.0\EventsWebApplication.API.genruntimeconfig.cache
 C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\obj\Debug\net8.0\ref\EventsWebApplication.API.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\EventsWebApplication.Application.dll
+C:\Users\nikyu\Documents\GitHub\EventsWebApplication\EventsWebApplication\EventsWebApplication\bin\Debug\net8.0\EventsWebApplication.Application.pdb

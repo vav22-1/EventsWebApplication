@@ -20,18 +20,25 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
-
-var app = builder.Build();
-app.UseCors("AllowAll");
-app.UseCustomMiddlewares();
-
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwaggerDocumentation();
-}
+    var app = builder.Build();
+    app.UseCors("AllowAll");
+    app.UseCustomMiddlewares();
 
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
-app.Run();
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwaggerDocumentation();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.MapControllers();
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex);
+}

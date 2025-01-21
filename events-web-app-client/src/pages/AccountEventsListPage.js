@@ -15,7 +15,8 @@ const AccountEventsList = () => {
     filterCategory: ""
   });
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(3);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageSize] = useState(8);
 
   const [debounceTimer, setDebounceTimer] = useState(null);
 
@@ -30,22 +31,19 @@ const AccountEventsList = () => {
     const fetchMyEvents = async () => {
       try {
         const participantId = localStorage.getItem("participantId");
-        const participantResponse = await api.get(`/Participants/${participantId}`);
-        const { eventIds } = participantResponse.data;
-
-        if (!eventIds || eventIds.length === 0) {
-          setEvents([]);
-          return;
-        }
-
+        
         const params = {
           ...filter,
           page,
           pageSize
         };
-        const response = await api.get("/Events/filter", { params });
+        const response = await api.get(`/Events/${participantId}/events`, { params });
+
+        const { items, totalPages } = response.data;
+        setTotalPages(totalPages);
+
         const eventsWithData = await Promise.all(
-          response.data.items.map(async (event) => {
+          items.map(async (event) => {
             try {
               if (event.imagePath) {
                 const imageResponse = await api.get(`/Events/${event.id}/image`, {
@@ -65,8 +63,8 @@ const AccountEventsList = () => {
             return event;
           })
         );
-        const filteredEvents = eventsWithData.filter(event => eventIds.includes(event.id));
-        setEvents(filteredEvents);
+
+        setEvents(eventsWithData);
       } catch (error) {
         setToastMessage("Ошибка при загрузке данных.");
         console.error("Error during request:", error);
@@ -80,7 +78,7 @@ const AccountEventsList = () => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (debounceTimer) {
       clearTimeout(debounceTimer);
     }
@@ -89,7 +87,7 @@ const AccountEventsList = () => {
         ...prevFilter,
         [name]: value
       }));
-    }, 1);
+    }, 300);
 
     setDebounceTimer(timer);
   };
@@ -134,15 +132,19 @@ const AccountEventsList = () => {
   
       <div className="eventlist">
         <div className="page-navigation">
-          <button onClick={() => setPage(prevPage => prevPage - 1)} disabled={page <= 1}>
+          <button
+            onClick={() => setPage((prevPage) => prevPage - 1)}
+            disabled={page <= 1}
+          >
             Назад
           </button>
-          <span>Страница {page}</span>
-          {events.length === pageSize && (
-            <button onClick={() => setPage(prevPage => prevPage + 1)}>
-              Вперед
-            </button>
-          )}
+          <span>Страница {page} из {totalPages}</span>
+          <button
+            onClick={() => setPage((prevPage) => prevPage + 1)}
+            disabled={page >= totalPages}
+          >
+            Вперед
+          </button>
         </div>
   
         <div>

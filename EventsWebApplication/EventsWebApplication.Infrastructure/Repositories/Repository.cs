@@ -33,13 +33,9 @@ namespace EventsWebApplication.Infrastructure.Repositories
             _dbContext.Set<T>().Update(entity);
         }
 
-        public async Task DeleteAsync(int id)
+        public void Delete(T entity)
         {
-            var entity = await _dbContext.Set<T>().FindAsync(id);
-            if (entity != null)
-            {
-                _dbContext.Set<T>().Remove(entity);
-            }
+            _dbContext.Set<T>().Remove(entity);
         }
     }
 }

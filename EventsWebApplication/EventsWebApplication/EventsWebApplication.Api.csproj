@@ -23,12 +23,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
+    <ProjectReference Include="..\EventsWebApplication.Application\EventsWebApplication.Application.csproj" />
 	<ProjectReference Include="..\EventsWebApplication.Core\EventsWebApplication.Core.csproj" />
-	  <ProjectReference Include="..\EventsWebApplication.Infrastructure\EventsWebApplication.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
+	<ProjectReference Include="..\EventsWebApplication.Infrastructure\EventsWebApplication.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

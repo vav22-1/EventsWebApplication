@@ -1,14 +1,16 @@
-﻿using EventsWebApplication.Core.Interfaces.UseCases;
+﻿using EventsWebApplication.Core.DTOs;
+using EventsWebApplication.Core.Interfaces;
+using EventsWebApplication.Core.Models;
 
 namespace EventsWebApplication.API.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class NotificationsController : ControllerBase
     {
-        private readonly INotificationUseCase _notificationUseCase;
+        private readonly IUseCase<NotificationRequestDto, IEnumerable<Notification>> _notificationUseCase;
 
-        public NotificationsController(INotificationUseCase notificationUseCase)
+        public NotificationsController(IUseCase<NotificationRequestDto, IEnumerable<Notification>> notificationUseCase)
         {
             _notificationUseCase = notificationUseCase;
         }
@@ -18,7 +20,11 @@ namespace EventsWebApplication.API.Controllers
         public async Task<IActionResult> GetNotifications()
         {
             var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "0");
-            var notifications = await _notificationUseCase.GetNotificationsForUserAsync(userId);
+
+            var requestDto = new NotificationRequestDto { UserId = userId };
+
+            var notifications = await _notificationUseCase.ExecuteAsync(requestDto);
+
             return Ok(notifications);
         }
     }
