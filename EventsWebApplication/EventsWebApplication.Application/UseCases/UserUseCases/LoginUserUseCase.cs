@@ -25,8 +25,12 @@ namespace EventsWebApplication.Application.UseCases
             }
 
             var accessToken = _tokenService.GenerateJwtAccessToken(user);
-            user.RefreshToken = Guid.NewGuid().ToString();
-            user.RefreshTokenExpiry = DateTime.UtcNow.AddHours(12);
+
+            if (user.RefreshTokenExpiry < DateTime.UtcNow)
+            {
+                user.RefreshToken = Guid.NewGuid().ToString();
+                user.RefreshTokenExpiry = DateTime.UtcNow.AddHours(24);
+            }
 
             _unitOfWork.Users.Update(user);
             await _unitOfWork.CompleteAsync();
